@@ -33,9 +33,6 @@ class Solution(object):
                     d_v[j] += [val]
                     d_sq[i_sq] += [val]
 
-        l_board = []
-        for i in range(9):
-            l_board.append([])
         while True:
             found_count = 0
             for i in range(9):
@@ -59,16 +56,12 @@ class Solution(object):
                             d_v[j][i] = candidate[0]
                             d_sq[i_sq] += candidate
                             found_count += 1
-                        '''
-                        else:
-                            unknown[len(candidate)] += [[candidate, (i, j)]]
-                            row.append(list(candidate))
-                        '''
-                l_board[i] = row
+
             if found_count == 0:
                 break
 
-        #Then clean up unknown
+        #Then find unknown
+        has_unknown = False
         for i in range(9):
             row = []
             for j in range(9):
@@ -82,15 +75,79 @@ class Solution(object):
                     if len(candidate) > 1:
                         unknown[len(candidate)] += [[candidate, (i, j)]]
                         row.append(list(candidate))
-            l_board[i] = row
 
         # Then backtrack
+        guess = []
+        #return
 
+        back_track_count = 0
+        m = 2
+        n = 0
+        i_sel = 0
+        while True:
 
-        print l_board
+            k = unknown.keys()
+            if len(k) == 0:
+                break
+
+            if n >= len(unknown[m]):
+                n = 0
+                m += 1
+                while m not in unknown.keys() and m < max(unknown.keys()):
+                    m += 1
+            if m > max(unknown.keys()):
+                break
+
+            cand, (i, j) = unknown[m][n]
+
+            i_sq = 3 * (i / 3) + j / 3
+
+            while True:
+                found = False
+                if i_sel >= len(cand):
+                    break
+                if cand[i_sel] not in d_r[i] and cand[i_sel] not in d_v[j] and cand[i_sel] not in d_sq[i_sq]:
+                    found = True
+                    break
+                else:
+                    i_sel += 1
+                    if i_sel >= len(cand):
+                        break
+            if found:
+                guess.append([cand, (m, n), (i, j), i_sel])
+                d_r[i][j] = cand[i_sel]
+                d_v[j][i] = cand[i_sel]
+                d_sq[i_sq] += [cand[i_sel]]
+                i_sel = 0
+            else:
+                # Conflict, backtrack
+                cand, (m, n), (i, j), i_sel = guess.pop()
+                back_track_count += 1
+                d_r[i][j] = None
+                d_v[j][i] = None
+                i_sq = 3 * (i / 3) + j / 3
+                d_sq[i_sq].remove(cand[i_sel])
+                #cand.pop(0)
+                i_sel += 1
+                continue
+
+            last_check = (m, n)
+            n = n + 1
+
+            #break
+
+        for i in range(9):
+            row = d_r[i]
+            row = [str(x) for x in row]
+            d_r[i] = row
+
+        for i in range(9):
+            board[i] = ''.join(d_r[i])
+
         return
 
 board = ["..9748...","7........",".2.1.9...","..7...24.",".64.1.59.",".98...3..","...8.3.2.","........6","...2759.."]
+board = ["53..7....","6..195...",".98....6.","8...6...3","4..8.3..1","7...2...6",".6....28.","...419..5","....8..79"]
 sol = Solution()
 sol.solveSudoku(board)
 
