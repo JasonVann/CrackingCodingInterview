@@ -1,5 +1,6 @@
 import time
 from collections import defaultdict
+import pprint
 
 start_time = time.time()
 
@@ -136,6 +137,7 @@ class Solution(object):
 
             #break
 
+        print back_track_count
         for i in range(9):
             row = d_r[i]
             row = [str(x) for x in row]
@@ -144,10 +146,14 @@ class Solution(object):
         for i in range(9):
             board[i] = ''.join(d_r[i])
 
+        pp = pprint.PrettyPrinter(width = 4, depth=2)
+        pp.pprint(d_r)
         return
 
 board = ["..9748...","7........",".2.1.9...","..7...24.",".64.1.59.",".98...3..","...8.3.2.","........6","...2759.."]
 board = ["53..7....","6..195...",".98....6.","8...6...3","4..8.3..1","7...2...6",".6....28.","...419..5","....8..79"]
+board = ["........1", ".........",".........",".........",".........",".........",".........",".........","........."]
+board = ["....54.9.",".1...9.26","...67....", "..8....61","1.......4","63....5..","....83...","25.4...1.",".9.21...."]
 sol = Solution()
 sol.solveSudoku(board)
 
