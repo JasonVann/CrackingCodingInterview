@@ -56,3 +56,16 @@ ex78 = Ex78()
 nums = [1,2,3]
 print 78, ex78.subsets(nums)
 
+class Ex78(object):
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        res = []
+        res = [[i] for i in nums]
+        return res
+        
+ex78 = Ex78()
+nums = [1,2,3]
+print 78, ex78.subsets(nums)

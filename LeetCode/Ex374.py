@@ -25,4 +25,21 @@ class Ex374(object):
                 return mid
             else:
                 l = mid
-        return l if guess(l) == 0 else l + 1
+        return l if guess(l) == 0 else l + 1i
+
+def guessNumber(n):
+    """
+    :type n: int
+    :rtype: int
+    """ 
+    lo = 1
+    high = n
+    while(lo <= high):
+        new = (lo + high)/2
+        res = guess(new)
+        if(res == 1):
+            lo = new + 1
+        elif res == -1:
+            high = new -1
+        else:
+            return new
