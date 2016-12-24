@@ -1,3 +1,24 @@
+class Ex342(object):
+    def isPowerOfFour(self, num):
+        """
+        :type num: int
+        :rtype: bool
+        """
+        n = 1
+        if num < 0:
+            return False
+        while n < num:
+            n = n << 2
+        return n == num
+    '''
+    bool isPowerOfFour(int n) {
+        return n>0 && (n&(n-1))==0 && (n&0x55555555);
+    }
+    '''
+            
+ex342 = Ex342()
+print 342, ex342.isPowerOfFour(1)
+
 class Solution(object):
     def isPowerOfFour(self, num):
         """
