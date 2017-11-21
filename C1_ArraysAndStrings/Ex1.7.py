@@ -18,6 +18,8 @@ def rotate_matrix2(matrix):
         for j in range(i, n):
             matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
+    return matrix
+        
     for i in range(n/2):
         for j in range(n):
             matrix[i][j], matrix[n-1-i][j] = matrix[n-1-i][j], matrix[i][j]
