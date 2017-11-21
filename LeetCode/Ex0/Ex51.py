@@ -31,15 +31,38 @@ class Solution:
         for k in range(self.n):
             if state[k][j] == 'Q':
                 return False
-        for m in range (1, self.n):
+        if i < j:
+            s = i
+            b = j
+        else:
+            s, b = j, i
+        '''
+        for m in range(1, s+1):
             if (i-m) >=0 and (j-m) >= 0 and state[i-m][j-m] == 'Q':
                 return False
+        for m in range(1, self.n+1-b):
+            if (i+m) < self.n and (j+m) < self.n and state[i+m][j+m] == 'Q':
+                return False
+        '''
+        for m in range (0, self.n):
+            # m+n == i+j, m-n = i-j
+            if i+j-m >=0 and i+j-m < self.n and state[m][i+j-m] == 'Q':
+                return False
+            if m+j-i >= 0 and m+j-i < self.n and state[m][m+j-i] == 'Q':
+                return False
+
+            '''
+            if (i-m) >=0 and (j-m) >= 0 and state[i-m][j-m] == 'Q':
+                return False
+
             if (i+m) < self.n and (j-m) >= 0 and state[i+m][j-m] == 'Q':
                 return False
             if (i-m) >=0 and (j+m) < self.n and state[i-m][j+m] == 'Q':
                 return False
+
             if (i+m) < self.n and (j+m) < self.n and state[i+m][j+m] == 'Q':
                 return False
+            '''
         return True
 
     def format_str(self, board):
@@ -54,5 +77,5 @@ class Solution:
                         row.append('.')
 
 ex51 = Solution()
-ans = ex51.solveNQueens(4)
+ans = ex51.solveNQueens(2)
 print(ans)
