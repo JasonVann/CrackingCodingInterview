@@ -3,6 +3,49 @@ class TrieNode:
         self.child = [None]*26
         self.is_end_of_word = False
 
+class Dis(object):
+    def longestWord3(self, words):
+        ans = ""
+        wordset = set(words)
+        for word in words:
+            if len(word) > len(ans) or len(word) == len(ans) and word < ans:
+                if all(word[:k] in wordset for k in xrange(1, len(word))):
+                    ans = word
+        return ans
+
+    def longestWord2(self, words):
+        resword, res = '', {''}
+        for word in sorted(words):
+            if word[:-1] in res:
+                res.add(word)
+                resword = max(resword, word, key=len)
+        return resword
+
+    def longestWord(self, words):
+        # Python2
+        import collections
+        from functools import reduce
+        Trie = lambda: collections.defaultdict(Trie)
+        trie = Trie()
+        END = True
+
+        for i, word in enumerate(words):
+            reduce(dict.__getitem__, word, trie)[END] = i
+
+        stack = trie.values()
+        ans = ""
+        while stack:
+            cur = stack.pop()
+            if END in cur:
+                print(39, cur, END, cur[END], words[cur[END]])
+                word = words[cur[END]]
+                if len(word) > len(ans) or len(word) == len(ans) and word < ans:
+                    ans = word
+                stack.extend([cur[letter] for letter in cur if letter != END])
+
+        return ans
+
+
 class HashTable:
     def longestWord(self, words):
         """
@@ -49,13 +92,12 @@ class Solution:
                         best = new_path
                     elif len(best) == len(new_path) and new_path < best:
                         best = new_path
-                else:
-                    continue
-                best = self.expand(child, new_path, best)
+
+                    best = self.expand(child, new_path, best)
         return best
 
 
-class Trie:
+class Trie2:
     def __init__(self):
         """
         Initialize your data structure here.
@@ -144,4 +186,5 @@ words = ["yo","ew","fc","zrc","yodn","fcm","qm","qmo","fcmz","z","ewq","yod","ew
 #words = ['y', 'yo', 'yod', 'yodn']
 #words = reversed(words)
 Ex720 = Solution()
+Ex720 = Dis()
 print(Ex720.longestWord(words))
