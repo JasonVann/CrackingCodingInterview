@@ -1,4 +1,6 @@
 class Solution(object):
+    # Trie: https://discuss.leetcode.com/topic/39585/o-n-k-2-java-solution-with-trie-structure-n-total-number-of-words-k-average-length-of-each-word/2
+    
     def palindromePairs_n2(self, words):
         """
         :type words: List[str]
@@ -16,6 +18,27 @@ class Solution(object):
                 if self.is_palindrome(w2+w):
                     ans.append([j, i])
         return ans
+
+    def palindromePairs_quick(self, words):
+        def is_palindrome(check):
+            return check == check[::-1]
+
+        words = {word: i for i, word in enumerate(words)}
+        valid_pals = []
+        for word, k in words.iteritems():
+            n = len(word)
+            for j in range(n+1):
+                pref = word[:j]
+                suf = word[j:]
+                if is_palindrome(pref):
+                    back = suf[::-1]
+                    if back != word and back in words:
+                        valid_pals.append([words[back],  k])
+                if j != n and is_palindrome(suf):
+                    back = pref[::-1]
+                    if back != word and back in words:
+                        valid_pals.append([k, words[back]])
+        return valid_pals
 
     def palindromePairs(self, words):
         """
@@ -75,6 +98,7 @@ class Solution(object):
                     self.res.add((j, k))
 
     def is_palindrome(self, word):
+        return word == word[::-1]
         l = len(word)
         for i in range(l):
             if word[i] != word[l-i-1]:
