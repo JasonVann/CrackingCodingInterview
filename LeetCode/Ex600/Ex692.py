@@ -1,4 +1,16 @@
 class Solution:
+    def topKFrequent2(self, words, k):
+        count = collections.Counter(words)
+        candidates = count.keys()
+        candidates.sort(key = lambda w: (-count[w], w))
+        return candidates[:k]
+
+    def topKFrequent_heap(self, words, k):
+        count = collections.Counter(words)
+        heap = [(-freq, word) for word, freq in count.items()]
+        heapq.heapify(heap)
+        return [heapq.heappop(heap)[1] for _ in xrange(k)]
+
     def topKFrequent(self, words, k):
         """
         :type words: List[str]
