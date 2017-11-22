@@ -1,5 +1,5 @@
 class Solution(object):
-    def palindromePairs3(self, words):
+    def palindromePairs_n2(self, words):
         """
         :type words: List[str]
         :rtype: List[List[int]]
@@ -22,55 +22,57 @@ class Solution(object):
         :type words: List[str]
         :rtype: List[List[int]]
         """
-        dic = {}
-        res = set()
-        palindrome = {}
+        self.dic = {}
+        self.res = set()
+        self.palindrome = {}
         for i, w in enumerate(words):
-            dic[w] = i
+            self.dic[w] = i
             if w and self.is_palindrome(w):
-                palindrome[w] = i
+                self.palindrome[w] = i
         for i, w in enumerate(words):
             if len(w) == 0:
-                for k, v in palindrome.items():
-                    res.add((i, v))
+                for k, v in self.palindrome.items():
+                    self.res.add((i, v))
 
-            cands = self.expand_for(w)
-            for cand in cands:
-                if cand in dic:
-                    j = dic[cand]
-                    res.add((i, j))
-            cands = self.expand_rev(w)
-            for cand in cands:
-                if cand in dic:
-                    j = dic[cand]
-                    res.add((j, i))
+            self.expand_for(w)
+            self.expand_rev(w)
+
         ans = []
-        for (i, j) in res:
+        for (i, j) in self.res:
             ans.append([i, j])
         return ans
 
     def expand_for(self, word):
-        cands = set([word])
+        #cands = set([word])
         l = len(word)
         for i in range(l+1):
             cand = word[:] + word[:i][::-1]
-            if self.is_palindrome(cand):
-                #print(word, cand, word[:i][::-1])
-                cands.add(word[:i][::-1])
-        cands.remove(word)
-        return cands
+            comp = word[:i][::-1]
+
+            if comp in self.dic:
+                if self.is_palindrome(cand):
+                    #print(word, cand, word[:i][::-1])
+                    if comp == word:
+                        continue
+                    j = self.dic[comp]
+                    k = self.dic[word]
+                    self.res.add((k, j))
 
     def expand_rev(self, word):
-        cands = set([word])
+        #cands = set([word])
         l = len(word)
         for i in range(l+1):
             cand2 = word[-i-1:][::-1] + word[:]
             #reversed(cand2)
             #print(word, cand2, word[-i-1:])
-            if self.is_palindrome(cand2):
-                cands.add(word[-i-1:][::-1])
-        cands.remove(word)
-        return cands
+            comp = word[-i-1:][::-1]
+            if comp in self.dic:
+                if self.is_palindrome(cand2):
+                    if comp == word:
+                        continue
+                    j = self.dic[comp]
+                    k = self.dic[word]
+                    self.res.add((j, k))
 
     def is_palindrome(self, word):
         l = len(word)
@@ -82,11 +84,11 @@ class Solution(object):
 Ex336 = Solution()
 words = ['lls']
 words = ["abcd","dcba","lls","s","sssll"]
-words = ["a",""]
+#words = ["a",""]
 #words = ['abcd', 'dcba']
-print(Ex336.expand_for('sssll'))
-print(Ex336.expand_rev('sssll'))
-print(Ex336.is_palindrome('abc'))
+#print(Ex336.expand_for('sssll'))
+#print(Ex336.expand_rev('sssll'))
+#print(Ex336.is_palindrome('abc'))
 print(Ex336.palindromePairs(words))
 
 
