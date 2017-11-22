@@ -22,6 +22,28 @@ class Solution:
 # obj.insert(key,val)
 # param_2 = obj.sum(prefix)
 
+def replaceWords(roots, sentence):
+    import collections
+    _trie = lambda: collections.defaultdict(_trie)
+    trie = _trie()
+    END = True
+    for root in roots:
+        cur = trie
+        for letter in root:
+            cur = cur[letter]
+        cur[END] = root
+
+    def replace(word):
+        cur = trie
+        for letter in word:
+            if letter not in cur: break
+            cur = cur[letter]
+            if END in cur:
+                return cur[END]
+        return word
+
+    return " ".join(map(replace, sentence.split()))
+
 class TrieNode:
     def __init__(self):
         self.child = [None]*26
@@ -72,4 +94,5 @@ class Trie:
         return None
 
 ex648 = Solution()
-ex648.replaceWords(["cat", "bat", "rat"], "the cattle was rattled by the battery")
+#ex648.replaceWords(["cat", "bat", "rat"], "the cattle was rattled by the battery")
+print(replaceWords(["cat", "bat", "rat"], "the cattle was rattled by the battery"))
