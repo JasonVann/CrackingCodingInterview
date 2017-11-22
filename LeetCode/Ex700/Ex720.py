@@ -3,18 +3,12 @@ class TrieNode:
         self.child = [None]*26
         self.is_end_of_word = False
 
-
-class Solution:
+class HashTable:
     def longestWord(self, words):
         """
         :type words: List[str]
         :rtype: str
         """
-        '''
-        trie = Trie()
-        for word in words:
-            trie.addWord(word)
-        '''
         lookup = set()
         for word in words:
             lookup.add(word)
@@ -28,6 +22,36 @@ class Solution:
                         best = word
                 else:
                     break
+        return best
+
+class Solution:
+    def longestWord(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        trie = Trie()
+        for word in words:
+            trie.addWord(word)
+        node = trie.root
+        best = ''
+        path = ''
+        best = self.expand(node, path, best)
+        return best
+
+    def expand(self, node, path, best):
+        last_node = node
+        for idx, child in enumerate(node.child):
+            if child:
+                new_path = path + chr(idx+ord('a'))
+                if child.is_end_of_word:
+                    if len(best) < len(new_path):
+                        best = new_path
+                    elif len(best) == len(new_path) and new_path < best:
+                        best = new_path
+                else:
+                    continue
+                best = self.expand(child, new_path, best)
         return best
 
 
@@ -115,6 +139,9 @@ class Trie:
         return True
 
 words = ["w","wo","wor","worl","world"]
-words = ["m","mo","moc","moch","mocha","l","la","lat","latt","latte","c","ca","cat"]
+#words = ["m","mo","moc","moch","mocha","l","la","lat","latt","latte","c","ca","cat"]
+words = ["yo","ew","fc","zrc","yodn","fcm","qm","qmo","fcmz","z","ewq","yod","ewqz","y"]
+#words = ['y', 'yo', 'yod', 'yodn']
+#words = reversed(words)
 Ex720 = Solution()
 print(Ex720.longestWord(words))
