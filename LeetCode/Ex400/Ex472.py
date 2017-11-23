@@ -1,4 +1,39 @@
+import sys
+sys.setrecursionlimit(650000)
+
 class Solution:
+    def findAllConcatenatedWordsInADict(self, words):
+        """
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        lookup = set()
+        for word in words:
+            lookup.add(word)
+        self.ans = set()
+        for word in words:
+            self.dfs(lookup, word, word, [])
+        return list(self.ans)
+
+    def dfs(self, lookup, word, orig, path):
+        l = len(word)
+        for i in range(1, l+1):
+            temp = word[:i]
+            if temp in lookup:
+                path2 = path + [temp]
+                rest = word[i:]
+                ans, temp = self.dfs(lookup, rest, orig, path2)
+                if temp:
+                    self.ans.add(temp)
+                    return True, None
+                if ans:
+                    return True, None
+        temp = ''.join(path)
+        if temp == orig and len(path) > 1:
+            return True, temp
+        return False, None
+
+class Solution_by_letter:
     def findAllConcatenatedWordsInADict(self, words):
         """
         :type words: List[str]
