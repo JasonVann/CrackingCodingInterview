@@ -1,5 +1,49 @@
 #import sys
 #sys.setrecursionlimit(650000)
+class peer():
+    def findAllConcatenatedWordsInADict(self, words):
+        """
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        word_set = set(words)
+        ans = []
+        def helper(w, cur, cnt):
+            if cur == len(w):
+                if cnt > 1:
+                    return True
+                else:
+                    return False
+            for i in xrange(cur + 1, len(w) + 1):
+                if w[cur : i] in word_set and helper(w, i, cnt + 1):
+                    return True
+            return False
+        for w in words:
+            if helper(w, 0, 0):
+                ans.append(w)
+        return ans
+
+    def findAllConcatenatedWordsInADict(self, words):
+        S = set(A)
+        ans = []
+        for word in A:
+          if not word: continue
+          stack = [0]
+          seen = {0}
+          M = len(word)
+          while stack:
+            node = stack.pop()
+            if node == M:
+              ans.append(word)
+              break
+            for j in xrange(M - node + 1):
+              if (word[node:node+j] in S and
+                  node + j not in seen and
+                  (node > 0 or node + j != M)):
+                stack.append(node + j)
+                seen.add(node + j)
+        return ans
+
 
 class Solution:
     # 500ms
@@ -12,12 +56,12 @@ class Solution:
         for word in words:
             if len(word) != 0:
                 lookup.add(word)
-        self.ans = set()
+        self.ans = []
         for word in words:
             if len(word) == 0:
                 continue
             self.dfs(lookup, word, word, [])
-        return list(self.ans)
+        return self.ans
 
     def dfs(self, lookup, word, orig, path):
         l = len(word)
@@ -27,11 +71,11 @@ class Solution:
                 path2 = path + [temp]
                 rest = word[i:]
                 if rest in lookup:
-                    self.ans.add(orig)
+                    self.ans.append(orig)
                     return True, None
                 ans, temp = self.dfs(lookup, rest, orig, path2)
                 if temp:
-                    self.ans.add(temp)
+                    self.ans.append(temp)
                     return True, None
                 if ans:
                     return True, None
