@@ -1,3 +1,67 @@
+#https://discuss.leetcode.com/topic/33246/java-15ms-easiest-solution-100-00
+
+class Peer_trie:
+    # @param {character[][]} board
+    # @param {string[]} words
+    # @return {string[]}
+    def findWords(self, board, words):
+    #make trie
+        trie={}
+        for w in words:
+            t=trie
+            for c in w:
+                if c not in t:
+                    t[c]={}
+                t=t[c]
+            t['#']='#'
+        self.res=set()
+        self.used=[[False]*len(board[0]) for _ in range(len(board))]
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                self.find(board,i,j,trie,'')
+        return list(self.res)
+
+    def find(self,board,i,j,trie,pre):
+        if '#' in trie:
+            self.res.add(pre)
+        if i<0 or i>=len(board) or j<0 or j>=len(board[0]):
+            return
+        if not self.used[i][j] and board[i][j] in trie:
+            self.used[i][j]=True
+            self.find(board,i+1,j,trie[board[i][j]],pre+board[i][j])
+            self.find(board,i,j+1,trie[board[i][j]],pre+board[i][j])
+            self.find(board,i-1,j,trie[board[i][j]],pre+board[i][j])
+            self.find(board,i,j-1,trie[board[i][j]],pre+board[i][j])
+            self.used[i][j]=False
+
+class Peer:
+    def findWords(self, board, words):
+        # Complex number
+        root = {}
+        for word in words:
+            node = root
+            for c in word:
+                node = node.setdefault(c, {})
+            node[None] = True
+        board = {i + 1j*j: c
+                 for i, row in enumerate(board)
+                 for j, c in enumerate(row)}
+
+        found = []
+        def search(node, z, word):
+            if node.pop(None, None):
+                found.append(word)
+            c = board.get(z)
+            if c in node:
+                board[z] = None
+                for k in range(4):
+                    search(node[c], z + 1j**k, word + c)
+                board[z] = c
+        for z in board:
+            search(root, z, '')
+
+        return found
+
 class Solution:
     def findWords(self, board, words):
         """
@@ -55,67 +119,6 @@ class TrieNode:
         self.is_end_of_word = False
 
 
-class Trie_Recur:
-    # Maybe better to use Trie and TrieNode, not a nested Trie class
-    # http://www.geeksforgeeks.org/trie-insert-and-search/
-    def __init__(self):
-        """
-        Initialize your data structure here.
-        """
-        #self.root = TrieNode()
-        self.child = [None]*26
-        self.is_end_of_word = False
-
-    def insert(self, word):
-        """
-        Inserts a word into the trie.
-        :type word: str
-        :rtype: void
-        """
-        if len(word) == 0:
-            self.is_end_of_word = True
-            return
-
-        idx = ord(word[0])-ord('a')
-        if self.child[idx] == None:
-            node = Trie()
-            self.child[idx] = node
-        else:
-            node = self.child[idx]
-
-        node.insert(word[1:])
-
-    def search(self, word):
-        """
-        Returns if the word is in the trie.
-        :type word: str
-        :rtype: bool
-        """
-        if len(word) == 0:
-            return False
-
-        idx = ord(word[0])-ord('a')
-        if self.child[idx] == None:
-            return False
-        if len(word) == 1 and self.child[idx] and self.child[idx].is_end_of_word:
-            return True
-        return self.child[idx].search(word[1:])
-
-    def startsWith(self, prefix):
-        """
-        Returns if there is any word in the trie that starts with the given prefix.
-        :type prefix: str
-        :rtype: bool
-        """
-        if len(prefix) == 0:
-            return True
-
-        idx = ord(prefix[0])-ord('a')
-        if self.child[idx] == None:
-            return False
-        if len(prefix) == 1 and self.child[idx]:
-            return True
-        return self.child[idx].startsWith(prefix[1:])
 
 
 class Trie:
@@ -200,24 +203,12 @@ class Trie:
         return True
 
 
-Ex212 = Solution()
+Ex212 = Peer()
 board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]]
 words = ["oath","pea","eat","rain", "eate"]
-board = [["a"]]
-words = ["a"]
-board = [["a","a"]]
-words = ["aaa"]
+#board = [["a"]]
+#words = ["a"]
+#board = [["a","a"]]
+#words = ["aaa"]
 res = Ex212.findWords(board, words)
 print(res)
-
-
-def test_Trie():
-    word = 'test'
-    obj = Trie()
-    obj.insert(word)
-    param_2 = obj.search(word)
-    print(param_2)
-    print(obj.search(word[:3]))
-    print(obj.search('testb'))
-    #param_3 = obj.startsWith(prefix)
-    print(obj.startsWith('tes'))
