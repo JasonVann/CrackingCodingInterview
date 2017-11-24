@@ -1,4 +1,5 @@
-class Solution:
+class Solution_Trie:
+    # TLE
     def wordBreak(self, s, wordDict):
         """
         :type s: str
@@ -45,6 +46,88 @@ class Solution:
             return True
         return False
 
+class Solution:
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: List[str]
+        """
+        lookup = {}
+        for i, word in enumerate(wordDict):
+            lookup[word] = i
+        self.lookup = lookup
+        self.l = len(s)
+        self.map = set()
+        self.path = {}
+        self.search(s, 0, 0, '', [])
+        if self.l-1 not in self.path:
+            return []
+        temp = self.path[self.l-1]
+        ans = [' '.join(a) for a in temp]
+        #ans = ' '.join(temp[0])
+        return ans
+
+    def search(self, s, start, j, cur, path):
+        while j < self.l:
+            cur = cur + s[j]
+            if cur in self.lookup:
+                if j not in self.map:
+                    self.map.add(j) # can reach from 0 to 'j'
+                if j not in self.path:
+                    self.path[j] = [path + [cur]]
+                else:
+                    self.path[j].append(path + [cur])
+                res = self.search(s, j, j+1, '', path + [cur])
+                #self.search(s, j+1, cur)
+            j += 1
+        return
+
+class Solution2:
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: List[str]
+        """
+        S = set()
+        for word in wordDict:
+            S.add(word)
+        self.ans = []
+        i = 0
+        j = 0
+        self.s = s
+        self.l = len(s)
+        self.expand(0, [])
+        return self.ans
+
+    def expand(self, j, path):
+        while j < self.l:
+            if node.is_end_of_word:
+                path2 = path + [node.word]
+                # Start from root again
+                res = self.expand(self.trie.root, j, path2)
+                # Or continue
+                '''
+                if res:
+                    if node.is_end_of_word:
+                        path += [node.word]
+                    self.ans += [' '.join(path)]
+                else:
+                '''
+                # path.pop()
+            idx = ord(self.s[j]) - ord('a')
+            if node.child[idx] == None:
+                return False
+            node = node.child[idx]
+            j += 1
+
+        if node.is_end_of_word:
+            path = path + [node.word]
+
+            self.ans += [' '.join(path)]
+            return True
+        return False
 
 class TrieNode:
     def __init__(self):
@@ -139,6 +222,8 @@ class Trie:
 Ex140 = Solution()
 word = "catsanddog"
 wordDict = ["cat", "cats", "and", "sand", "dog"]
-word = "aaaaaaa"
-wordDict = ["aaaa","aa"]
+#word = "aaaaaaa"
+#wordDict = ["aaaa","aa"]
+#word = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+#wordDict = ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
 print(Ex140.wordBreak(word, wordDict))
