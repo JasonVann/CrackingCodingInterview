@@ -47,6 +47,152 @@ class Solution_Trie:
         return False
 
 class Solution:
+    # 500ms
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: List[str]
+        """
+        lookup = set(wordDict)
+        path = {}
+        for word in wordDict:
+            l = len(word)
+            '''
+            if l in path:
+                path[l] += [word]
+            else:
+                path[l] = [word]
+            '''
+        self.ans = []
+        self.s = s
+        self.l = len(s)
+        hit = set(path.keys())
+
+        for i in range(self.l+1):
+            for j in range(-1, i):
+                if j != -1 and j not in path:
+                    continue
+                if s[j+1:i] in lookup:
+                    hit.add(i-1)
+                    extend = []
+                    if j not in path:
+                        extend = [s[j+1:i]]
+                    else:
+                        for cur in path[j]:
+                            temp = cur + ' ' + s[j+1:i]
+                            extend += [temp]
+                    if i-1 not in path:
+                        path[i-1] = extend
+                    else:
+                        path[i-1].extend(extend)
+        if self.l-1 in path:
+            return path[self.l-1]
+        return []
+
+    def dfs(self, lookup, word, start, path):
+        l = self.l
+        for i in range(start+1, l+1):
+            temp = self.s[start:i]
+            if temp in lookup:
+                path2 = path + [temp]
+                rest = word[i:]
+                if rest in lookup:
+                    self.ans.append(path + [rest])
+                    return True, None
+                ans, temp = self.dfs(lookup, rest, i, path2)
+                if temp:
+                    self.ans.append(temp)
+                    return True, None
+                if ans:
+                    return True, None
+        #temp = ''.join(path)
+        if len(path) > 1:
+            return True, path
+        return False, None
+
+
+class Solution3:
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: List[str]
+        """
+        lookup = {}
+        max_l = 0
+        for i, word in enumerate(wordDict):
+            l = len(word)
+            if l in lookup:
+                lookup[l] = [word]
+            else:
+                lookup[l] += [word]
+            max_l = max(l, max_l)
+        self.lookup = lookup
+        self.l = len(s)
+        self.map = set()
+        self.path = {}
+        for i in range(self.l):
+            j = 0
+            while j <= max_l:
+                if j in lookup:
+                    for word in lookup[j]:
+                        if s[i:j] != w:
+                            pass
+            if i in self.path:
+                path = self.path[i]
+            elif i == 0:
+                path = ''
+            else:
+                continue
+            for w in self.lookup:
+                t = len(w)
+                j = i + t
+                path2 = str(path)
+                if s[i:j] != w:
+                    continue
+                if j not in self.path:
+                    path = path.split(',')
+                    temp = []
+                    for a in path:
+                        if a == '':
+                            temp.append(w)
+                        else:
+                            temp.append(a + ' ' + w)
+                        #path = [a + ' ' + w for a in path]
+                    path = temp
+                    #path = path + ' ' + w
+                    path = ','.join(path)
+                    self.path[j] = path
+                else:
+                    self.path[j] += ',' + path + ' ' + w
+                path = str(path2)
+            if i in self.path:
+                self.path.pop(i)
+        #self.search(s, 0, 0, '', [])
+        if self.l not in self.path:
+            return []
+        temp = self.path[self.l]
+        #ans = ' '.join(temp[0])
+        return temp.split(',')
+
+    def search(self, s, start, j, cur, path):
+        while j < self.l:
+            cur = cur + s[j]
+            if cur in self.lookup:
+                if j not in self.map:
+                    self.map.add(j) # can reach from 0 to 'j'
+                if j not in self.path:
+                    self.path[j] = [path + [cur]]
+                else:
+                    self.path[j].append(path + [cur])
+                res = self.search(s, j, j+1, '', path + [cur])
+                #self.search(s, j+1, cur)
+            j += 1
+        return
+
+
+class Solution_ND:
     def wordBreak(self, s, wordDict):
         """
         :type s: str
