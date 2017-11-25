@@ -60,13 +60,41 @@ class Solution:
         self.l = len(s)
         self.map = set()
         self.path = {}
-        self.search(s, 0, 0, '', [])
-        if self.l-1 not in self.path:
+        for i in range(self.l):
+            if i in self.path:
+                path = self.path[i]
+            elif i == 0:
+                path = ''
+            else:
+                continue
+            for w in self.lookup:
+                t = len(w)
+                j = i + t
+                path2 = str(path)
+                if s[i:j] != w:
+                    continue
+                if j not in self.path:
+                    path = path.split(',')
+                    temp = []
+                    for a in path:
+                        if a == '':
+                            temp.append(w)
+                        else:
+                            temp.append(a + ' ' + w)
+                        #path = [a + ' ' + w for a in path]
+                    path = temp
+                    #path = path + ' ' + w
+                    path = ','.join(path)
+                    self.path[j] = path
+                else:
+                    self.path[j] += ',' + path + ' ' + w
+                path = str(path2)
+        #self.search(s, 0, 0, '', [])
+        if self.l not in self.path:
             return []
-        temp = self.path[self.l-1]
-        ans = [' '.join(a) for a in temp]
+        temp = self.path[self.l]
         #ans = ' '.join(temp[0])
-        return ans
+        return temp.split(',')
 
     def search(self, s, start, j, cur, path):
         while j < self.l:
@@ -224,6 +252,6 @@ word = "catsanddog"
 wordDict = ["cat", "cats", "and", "sand", "dog"]
 #word = "aaaaaaa"
 #wordDict = ["aaaa","aa"]
-#word = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-#wordDict = ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
+word = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+wordDict = ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
 print(Ex140.wordBreak(word, wordDict))
