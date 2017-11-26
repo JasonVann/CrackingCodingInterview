@@ -21,3 +21,24 @@ select distinct Num as ConsecutiveNums
 Select DISTINCT l1.Num from Logs l1, Logs l2, Logs l3
 where l1.Id=l2.Id-1 and l2.Id=l3.Id-1
 and l1.Num=l2.Num and l2.Num=l3.Num
+
+select distinct Num from (
+    select
+        Num,
+        case
+            when @prevNum = Num then @count := @count + 1
+            when (@prevNum := Num) is not null then @count := 1
+        end n
+    from Logs, (select @prevNum := NULL) r
+    order by Id
+) a where n >= 3
+
+select DISTINCT num FROM
+(select num,
+	case
+		when @record = num then @count:=@count+1
+		when @record <> @record:=num then @count:=1 end as n
+    from
+	    Logs ,(select @count:=0,@record:=(SELECT num from Logs limit 0,1)) r
+) a
+where a.n>=3
