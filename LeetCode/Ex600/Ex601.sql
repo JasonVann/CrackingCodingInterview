@@ -70,6 +70,7 @@ SELECT t.* FROM stadium t
          OR (t.people >= 100 AND n1.people >= 100 AND p1.people >= 100)
     ORDER BY id;
 
+# @prevone is not needed
 SELECT
       *
     FROM
@@ -89,6 +90,8 @@ SELECT
               THEN @group := @group + 1
               ELSE @group := @group
             END AS groupno,
+            @prevone as p1,
+            @prevtwo as p2,
             (@prevtwo := people) AS bb
           FROM
             stadium,
