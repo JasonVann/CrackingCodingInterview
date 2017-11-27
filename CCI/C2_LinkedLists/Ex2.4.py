@@ -26,4 +26,6 @@ def partition(head, k):
     if not small:
         return partition
     small.next = partition
+    if large:
+        large.next = None
     return head
