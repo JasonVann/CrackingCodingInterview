@@ -17,5 +17,4 @@ def permu_palin(string):
                 return False
     return True
 
-print permu_palin('Tact Coa')
-
+print(permu_palin('Tact Coa'))

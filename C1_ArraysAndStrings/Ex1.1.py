@@ -1,10 +1,19 @@
-def is_unique(string):
-    # This doesn't quit work
+def is_unique2(string):
+    # This doesn't quite work
     res = 0
     for a in string:
         res = res^ord(a)
-    print res
+    print(res)
     return res != 0
 
-print is_unique('abcdefg')
-print is_unique('abcadefg')
+def is_unique(string):
+    res = set()
+    for a in string:
+        if a not in res:
+            res.add(a)
+        else:
+            return False
+    return True
+
+print(is_unique('abcdefg'))
+print(is_unique('abcadefg'))

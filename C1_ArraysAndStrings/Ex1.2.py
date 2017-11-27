@@ -16,6 +16,7 @@ def check_permu(a, b):
                 dic.pop(j)
     return True
 
+# II: sort both and compare: O(nlogn) time, O(n) time
 a = 'abcdef'
 b = 'bcfeda'
 a = 'abaa'

@@ -15,6 +15,22 @@ def URLify(string, l):
     res = ''.join(res[:l])
     return res.rstrip()
 
-print URLify('Mr John Smith   ', 13)
-            
-            
+def URLify2(string, l):
+    i = 0
+    res = []
+    has_add = False
+    for a in string:
+        if i > l:
+            break
+        if string[i] != ' ':
+            res.append(string[i])
+            has_add = False
+            i += 1
+        else:
+            if not has_add:
+                res.append('%20')
+                has_add = True
+                i += 1
+    return ''.join(res)
+
+print(URLify('Mr John Smith   ', 13))
