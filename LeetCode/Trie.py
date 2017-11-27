@@ -68,7 +68,6 @@ class Trie_Recur:
 
 
 class Trie:
-
     def __init__(self):
         """
         Initialize your data structure here.
@@ -91,6 +90,37 @@ class Trie:
         node.is_end_of_word = True
 
     def search(self, word):
+        """
+        Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+        :type word: str
+        :rtype: bool
+        """
+        if len(word) == 0:
+            return False
+
+        node = self.root
+        if '.' not in word:
+            return self.exact_search(word)
+        return self.node_search(word, node)
+
+    def node_search(self, word, node):
+        for i in range(len(word)):
+            idx = ord(word[i])-ord('a')
+            if word[i] != '.':
+                if node.child[idx] == None:
+                    return False
+                else:
+                    node = node.child[idx]
+            else:
+                for j in range(26):
+                    if node.child[j] != None:
+                        res = self.node_search(word[i+1:], node.child[j])
+                        if res:
+                            return True
+                return False
+        return node.is_end_of_word
+
+    def eact_search(self, word):
         """
         Returns if the word is in the trie.
         :type word: str
