@@ -27,5 +27,6 @@ def partition(head, k):
         return partition
     small.next = partition
     if large:
+        # O/w, may have a loop
         large.next = None
     return head

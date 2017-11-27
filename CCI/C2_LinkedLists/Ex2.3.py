@@ -13,6 +13,7 @@ def delete(node):
     prev.next = None
 
 def delete_sol(node):
+    # good
     if node == None or node.next == None:
         return
     next_node = node.next

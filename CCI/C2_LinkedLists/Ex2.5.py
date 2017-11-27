@@ -81,11 +81,9 @@ def sum_recur_rev(a, b):
 
 def sum_recur(a, b):
     # 4321 + 7659: 4->3->2->1 + 0->7->6->5
-    #
     def recur(a, b):
         if a == None:
             return 0, None
-
         carry, temp = recur(a.next, b.next)
         a.next = temp
         a.val = a.val + b.val + carry
