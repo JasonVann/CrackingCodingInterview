@@ -9,7 +9,7 @@ class Queue():
         self.last = None
 
     def push(self, val):
-        node = Node(val)
+        node = self.Node(val)
         if self.last:
             self.last.next = node
             self.last = self.last.next

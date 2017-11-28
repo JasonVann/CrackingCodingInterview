@@ -7,11 +7,13 @@ class Stack():
 
     def __init__(self):
         self.top = None
+        self.size = 0
 
     def push(self, val):
-        node = Node(val)
+        node = self.Node(val)
         node.next = self.top # !!
         self.top = node
+        self.size += 1
 
     def peek(self):
         if self.top:
@@ -25,6 +27,7 @@ class Stack():
             self.top = self.top.next
         else:
             data = None
+        self.size -= 1
         return data
 
     def is_empty(self):
