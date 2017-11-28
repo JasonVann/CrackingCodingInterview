@@ -1,4 +1,5 @@
 class Stack():
+    # By LinkedList
     class Node():
         def init(self, val):
             self.val = val
@@ -25,3 +26,30 @@ class Stack():
         else:
             data = None
         return data
+
+    def is_empty(self):
+        return self.top is None
+
+
+class Stack_array():
+    def init(self):
+        self.data = []
+        self.size = 0
+
+    def push(self, val):
+        self.data.append(val)
+        self.size += 1
+
+    def pop(self, val):
+        if self.size == 0:
+            return None
+        self.size -= 1
+        item = self.data[self.size]
+
+    def peek(self, val):
+        if self.size == 0:
+            return None
+        return self.data[self.size-1]
+
+    def is_empty(self):
+        return self.size == 0
