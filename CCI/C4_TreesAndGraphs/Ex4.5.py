@@ -1,5 +1,6 @@
 from tree import Tree_Node
 
+
 def validate_BST(root):
     def validate(node, lower, upper):
         if node is None:
@@ -17,12 +18,31 @@ def validate_BST(root):
         return True
     return validate(root, float('-inf'), float('inf'))
 
+
+last_printed = None
+
+
+def validate_BST2(node):
+    # CCI Sol
+    global last_printed
+    if node == None:
+        return True
+    if not validate_BST2(node.left):
+        return False
+    if last_printed is not None and last_printed >= node.val:
+        return False
+    last_printed = node.val
+    if not validate_BST2(node.right):
+        return False
+    return True
+
+
 def test():
     root = Tree_Node(5)
     #root.left = Tree_Node(5)
-    root.left = Tree_Node(2)
+    root.left = Tree_Node(5)
     root.right = Tree_Node(7)
-    root.left.right = Tree_Node(11)
+    root.left.left = Tree_Node(1)
     root.right.left = Tree_Node(6)
     '''
     root.add(2)
@@ -33,6 +53,8 @@ def test():
     root.add(8)
     '''
     res = validate_BST(root)
+    print(last_printed)
     return res
+
 
 print(test())
