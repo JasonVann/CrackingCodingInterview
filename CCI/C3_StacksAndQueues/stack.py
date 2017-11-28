@@ -1,11 +1,11 @@
 class Stack():
     # By LinkedList
     class Node():
-        def init(self, val):
+        def __init__(self, val):
             self.val = val
             self.next = None
 
-    def init(self):
+    def __init__(self):
         self.top = None
 
     def push(self, val):
@@ -32,7 +32,7 @@ class Stack():
 
 
 class Stack_array():
-    def init(self):
+    def __init__(self):
         self.data = []
         self.size = 0
 

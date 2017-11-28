@@ -1,10 +1,10 @@
 class Queue():
     class Node():
-        def init(self, val):
+        def __init__(self, val):
             self.val = val
             self.next = None
 
-    def init(self):
+    def __init__(self):
         self.first = None
         self.last = None
 
