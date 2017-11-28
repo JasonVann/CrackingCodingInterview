@@ -6,22 +6,22 @@ def build_minimal_tree(A):
     r = len(A)
     if r == 0:
         return Tree_Node(None)
-    return insert(None, A, l, r)
+    return insert(None, A, l, r-1)
 
 def insert(tree, A, l, r):
-    if l >= r:
+    if l > r:
         return
     mid = (l+r)//2
     if tree is None:
         tree = Tree_Node(A[mid])
-        A[mid] = None
+        #A[mid] = None
     else:
-        if A[mid] is None:
-            return
         tree.add(A[mid])
-        A[mid] = None
-    insert(tree, A, l, mid)
-    insert(tree, A, mid, r)
+        #A[mid] = None
+    left = insert(tree.left, A, l, mid-1)
+    right = insert(tree.right, A, mid+1, r)
+    tree.left = left
+    tree.right = right
     return tree
 
 def test():
