@@ -35,3 +35,18 @@ class Queue():
 
     def is_empty(self):
         return self.first is None
+
+def test():
+    q = Queue()
+    print(q.is_empty())
+    q.pop()
+    q.push(1)
+    print(q.is_empty())
+    q.push(2)
+    q.push(3)
+    print(q.pop())
+    print(q.pop())
+    print(q.pop())
+    print(q.is_empty())
+
+test()
