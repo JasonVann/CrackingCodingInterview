@@ -43,16 +43,30 @@ class Stack_array():
         self.data.append(val)
         self.size += 1
 
-    def pop(self, val):
+    def pop(self):
         if self.size == 0:
             return None
         self.size -= 1
         item = self.data[self.size]
+        return item
 
-    def peek(self, val):
+    def peek(self):
         if self.size == 0:
             return None
         return self.data[self.size-1]
 
     def is_empty(self):
         return self.size == 0
+
+def test():
+    s = Stack_array()
+    s.push(4)
+    s.push(3)
+    print(s.peek())
+
+    s.push(2)
+    s.push(1)
+    print(s.pop())
+    print(s.is_empty())
+
+test()
