@@ -10,6 +10,7 @@ def validate_BST(root):
                 return False
         if node.right:
             if node.right.val < node.val or node.right.val > upper:
+                # Can be changed to handle duplicate
                 return False
         left = validate(node.left, float('-inf'), node.val)
         right = validate(node.right, node.val, float('inf'))
@@ -24,6 +25,7 @@ last_printed = None
 
 def validate_BST2(node):
     # CCI Sol
+    # Cannot handle duplicates
     global last_printed
     if node == None:
         return True
