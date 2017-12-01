@@ -1,7 +1,7 @@
 def print_bin(num):
     # print 0.72 in binary
     i = 0
-    res = []
+    res = ['.']
     while i < 32:
         num = num * 2
         c,  num = str(int(num // 1)), num%1
