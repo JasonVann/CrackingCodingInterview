@@ -1,4 +1,4 @@
-class employee():
+class Employee():
     def __init__(self, id, level):
         self.id = id
         self.level = level
@@ -8,21 +8,21 @@ class employee():
     def handle_call(self, a_call):
         pass
 
-class call():
+class Call():
     def __init__(self, level_required):
         self.level_required = level_required
 
-class call_center():
+class CallCenter():
     def __init__(self, res_count, manager_count, director_count):
         self.res = []
         self.manager = []
         self.director = []
         for i in range(res_count):
-            self.res.append(employee(i, 1))
+            self.res.append(Employee(i, 1))
         for i in range(manager_count):
-            self.manager.append(employee(i, 2))
+            self.manager.append(Employee(i, 2))
         for i in range(director_count):
-            self.director.append(employee(i, 3))
+            self.director.append(Employee(i, 3))
 
     def dispatch_call(self, a_call):
         no_free = False
