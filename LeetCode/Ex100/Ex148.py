@@ -1,14 +1,74 @@
-ass ListNode(object):
+class ListNode(object):
     def __init__(self, x):
         self.val = x
         self.next = None
-        
+
+# https://leetcode.com/problems/sort-list/discuss/46712/
+# https://leetcode.com/problems/sort-list/discuss/46710/
+
 head = ListNode(-3)
 head.next = ListNode(4)
 head.next.next = head
 
 class Ex148(object):
-    def sort(self, prev, head, end):
+    def sortList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        n = 0
+        cur = head
+        while cur:
+            cur = cur.next
+            n += 1
+        step = 1
+        dummy = ListNode(None)
+        dummy.next = head
+        while step < n:
+            cur = dummy.next
+            tail = dummy
+            while(cur):
+                first = cur
+                second = self.split(first, step)
+                cur = self.split(second, step)
+                tail = self.merge(first, second, tail)
+            step *= 2
+        return dummy.next
+
+    def split(self, head, n):
+        # Split ll after n nodes
+        # Return the head of the remaining ll
+        i = 1
+        while i < n and head:
+            head = head.next
+            i += 1
+        if head is None:
+            return None
+        second = head.next
+        head.next = None
+        return second
+
+    def merge(self, first, second, head):
+        # Merge first and second to head
+        # Return the tail
+        cur = head
+        while first and second:
+            if first.val < second.val:
+                cur.next = first
+                first = first.next
+            else:
+                cur.next = second
+                second = second.next
+            cur = cur.next
+        if first:
+            cur.next = first
+        else:
+            cur.next = second
+        while cur.next:
+            cur = cur.next
+        return cur
+
+    def sort00(self, prev, head, end):
         # end: next_head
         #return 20, head, end
         if head == end or head.next == end:
@@ -31,7 +91,7 @@ class Ex148(object):
         if fast != end:
             slow = slow.next
         #return 74, prev, head, slow
-        (h1, end1) = self.sort(prev, head, slow)
+        (h1, end1) = self.sort00(prev, head, slow)
         #return 76, prev, h1, end1, end1.next, head, slow, end
         '''
         head = h1
@@ -43,16 +103,16 @@ class Ex148(object):
         if fast != end:
             slow = slow.next
         '''
-        (h2, end2) = self.sort(end1, end1.next, end)
+        (h2, end2) = self.sort00(end1, end1.next, end)
         #return 85, h1, h2, head, slow, end, end1, end2
-        h = self.merge(prev, h1, h2, end)
+        h = self.merge0(prev, h1, h2, end)
         h0 = h
         while h0 and h0.next and h0.next != end:
             h0 = h0.next
 
         return (h, h0)
-        
-    def merge(self, prev, h1, h2, end):
+
+    def merge0(self, prev, h1, h2, end):
         if not h1:
             return h2
         if h2 == end:
@@ -81,7 +141,7 @@ class Ex148(object):
         if h2 and h2 != end:
             prev.next = h2
         return dummy.next
-        
+
     def sortList(self, head):
         """
         :type head: ListNode
@@ -101,11 +161,11 @@ class Ex148(object):
         '''
         dummy = ListNode(0)
         dummy.next = head
-        prev = dummy        
-        (h, end) = self.sort(prev, head, None)
-        
+        prev = dummy
+        (h, end) = self.sort00(prev, head, None)
+
         return h
-    
+
     def sortList0(self, head):
         """
         :type head: ListNode
@@ -126,10 +186,10 @@ class Ex148(object):
             fast = head
             slow = head
         return head
-    
-  
 
-  
+
+
+
 ex148 = Ex148()
 head = ListNode(-3)
 head.next = ListNode(4)
@@ -137,5 +197,4 @@ head.next.next = ListNode(1)
 head.next.next.next = ListNode(5)
 head.next.next.next.next = ListNode(5)
 head.next.next.next.next.next = ListNode(6)
-print 148, ex148.sortList(head)
-
+print(148, ex148.sortList(head))
