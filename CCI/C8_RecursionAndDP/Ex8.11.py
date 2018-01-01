@@ -37,5 +37,5 @@ def count(n, cache, coins):
 
 # 10, 5*2, 1*10, 5+1*5
 #print(count_coin(16))
-print(count_coin(137))
+print(count_coin(500))
 #print(count_coin(5))
